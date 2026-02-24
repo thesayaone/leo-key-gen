@@ -4,7 +4,7 @@ import random
 import string
 import time
 
-# --- HACKER TERMINAL STYLING (CSS) --- [cite: 2026-02-21]
+# --- HACKER TERMINAL STYLING (CSS) ---
 st.markdown("""
     <style>
     .stApp {
@@ -40,24 +40,24 @@ MASTER_PASSWORD = "28052025"
 def generate_leo_key(days_to_add):
     """
     Implements the 15-character secret logic:
-    Prefix (0-4): LeO06 [cite: 2026-02-04]
-    Month (5-6), Year (9-10), Day (13-14) [cite: 2026-02-24]
+    Prefix (Indices 0-4): LeO06
+    Month (Indices 5-6), Year (Indices 9-10), Day (Indices 13-14)
     """
     expiry_date = datetime.datetime.now() + datetime.timedelta(days=days_to_add)
-    prefix = "LeO06" [cite: 2026-02-04]
+    prefix = "LeO06"
     
     mm = expiry_date.strftime("%m")
     yy = expiry_date.strftime("%y")
     dd = expiry_date.strftime("%d")
     
-    # Random Fillers to maintain 15-character length [cite: 2026-02-24]
-    f1 = ''.join(random.choices(string.digits, k=2)) # Filler for index 7-8
-    f2 = ''.join(random.choices(string.digits, k=2)) # Filler for index 11-12
+    # Random Fillers for indices 7-8 and 11-12
+    f1 = ''.join(random.choices(string.digits, k=2))
+    f2 = ''.join(random.choices(string.digits, k=2))
     
-    # Final Structure: LeO06 (5) + MM (2) + F1 (2) + YY (2) + F2 (2) + DD (2) = 15 [cite: 2026-02-24]
+    # Final Structure: LeO06 + MM + F1 + YY + F2 + DD = 15 chars
     return f"{prefix}{mm}{f1}{yy}{f2}{dd}", expiry_date.strftime('%d-%m-%Y')
 
-# --- AUTHENTICATION LAYER --- [cite: 2026-02-21]
+# --- AUTHENTICATION LAYER ---
 if "authenticated" not in st.session_state:
     st.session_state.authenticated = False
 
@@ -71,7 +71,7 @@ if not st.session_state.authenticated:
         else:
             st.error("ACCESS DENIED: INVALID KEY")
 else:
-    # --- MAIN ENCRYPTION TERMINAL --- [cite: 2026-02-21]
+    # --- MAIN ENCRYPTION TERMINAL ---
     st.markdown('<h1 class="terminal-text">🦁 LEO ALGO SECURITY TERMINAL</h1>', unsafe_allow_html=True)
     
     option = st.selectbox("SELECT VALIDITY PERIOD", ["1 DAY", "1 WEEK", "1 MONTH", "3 MONTHS"])
@@ -80,7 +80,7 @@ else:
     if st.button("EXECUTE KEY GENERATION"):
         terminal_box = st.empty()
         
-        # Hacker-style Typing Animation [cite: 2026-02-21]
+        # Hacker-style Typing Animation
         logs = [
             "> Initializing Leo Algo Secure Protocol...",
             "> Bypassing AI Protection Headers...",
@@ -95,12 +95,12 @@ else:
             terminal_box.code(current_log)
             time.sleep(0.4) 
         
-        key, exp_date = generate_leo_key(days_map[option]) [cite: 2026-02-24]
+        key, exp_date = generate_leo_key(days_map[option])
         
         st.markdown(f'<p class="terminal-text">ACCESS KEY GENERATED FOR: {option}</p>', unsafe_allow_html=True)
         st.code(key, language="text")
         st.markdown(f'<p class="terminal-text">EXPIRY DATE: {exp_date}</p>', unsafe_allow_html=True)
         
-    if st.button("WIPE DATA & LOGOUT"): [cite: 2026-02-21]
+    if st.button("WIPE DATA & LOGOUT"):
         st.session_state.authenticated = False
         st.rerun()
